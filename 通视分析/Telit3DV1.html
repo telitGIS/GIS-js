@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Telit3D demo</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.csss"/>
+    <script type="text/javascript" src="https://js.arcgis.com/4.9/"></script>
+    <script language="javascript" type="text/javascript">
+        /******************************************function:input值范围************************************************/
+        function inputtext(obj, a, b) {
+            if (obj.value === "") {
+//                parseInt(obj.value) === obj.value &&
+            }
+            else {
+                if (parseInt(obj.value) >= a && parseInt(obj.value) <= b) {
+                }
+                else {
+                    alert('请输入数字,范围为' + a + '～' + b);
+                    obj.value = "";
+                }
+            }
+        }
+    </script>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #results {
+            top: 20px;
+            right: 400px;
+            position: absolute;
+            z-index: 99;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            opacity: 0.75;
+        }
+
+        #topbar {
+            top: 80px;
+            left: 100px;
+            position: absolute;
+            z-index: 99;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            opacity: 0.75;
+        }
+
+        #middlejwd {
+            top: 20px;
+            left: 100px;
+            position: absolute;
+            z-index: 99;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            opacity: 0.75;
+        }
+
+        .action-button {
+            font-size: 16px;
+            background-color: transparent;
+            border: 1px solid #D3D3D3;
+            color: #6e6e6e;
+            height: 32px;
+            width: 32px;
+            text-align: center;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-button:hover,
+        .action-button:focus {
+            background: #0079c1;
+            color: #e4e4e4;
+        }
+
+        .view-button:hover,
+        .view-button:focus {
+            background: #0079c1;
+            color: #e4e4e4;
+        }
+
+        .active {
+            background: #0079c1;
+            color: #e4e4e4;
+        }
+    </style>
+</head>
+
+<body>
+<div id="viewDiv">
+    <!-- <div id="home-button" class="esri-widget esri-widget&#45;&#45;button esri-interactive" title="默认">
+         <span class="esri-icon-home"></span>
+     </div>-->
+    <div id="point-button" class="view-button esri-widget esri-widget--button esri-interactive" title="画点">
+        <span class="esri-icon-radio-checked"></span>
+    </div>
+    <div id="line-button" class="view-button esri-widget esri-widget--button esri-interactive" title="画线">
+        <span class="esri-icon-polyline"></span>
+    </div>
+    <div id="area-button" class="view-button esri-widget esri-widget--button esri-interactive" title="画面">
+        <span class="esri-icon-polygon"></span>
+    </div>
+    <div id="circle-button" class="view-button esri-widget esri-widget--button esri-interactive" title="画圆">
+        <span class="esri-icon-radio-unchecked"></span>
+    </div>
+    <div id="rectangle-button" class="view-button esri-widget esri-widget--button esri-interactive" title="画矩形">
+        <span class="esri-icon-checkbox-unchecked"></span>
+    </div>
+    <div id="reset-button" class="view-button esri-widget esri-widget--button esri-interactive" title="清除">
+        <span class="esri-icon-trash"></span>
+    </div>
+    <div id="topbar">
+        <span>三维测量</span>
+        <button class="action-button esri-icon-minus" id="distanceButton" type="button"
+                title="两点测量3D"></button>
+        <button class="action-button esri-icon-polygon" id="areaButton" type="button"
+                title="面积量测3D"></button>
+    </div>
+    <div id="results">
+        <button id="BtntpView">视线分析</button>
+        <span id="areaSpan"></span>
+        <button id="BtnPView">通视分析</button>
+        <span id="areaSpan1"></span>
+        <button id="BtnPVisible">可见性分析</button>
+        <span id="areaSpan2"></span>
+    </div>
+    <div id="middlejwd">
+        <span>经度：</span><input type="text" id="jingdu" value="" onkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                               oninput="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                               onblur="inputtext(this,-180,180)">
+        <span>纬度：</span><input type="text" id="weidu" value="" onkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                               oninput="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                               onblur="inputtext(this,-90,90)">
+        <span>高程：</span><input type="text" id="height" value="">
+        <button id="btndingwei">定位</button>
+        <!--        <input onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+                <input name=txt1 onchange="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">-->
+    </div>
+</div>
+<script>
+    require([
+        "esri/widgets/Home",
+        "esri/Viewpoint",
+        "esri/Map",
+        "esri/Ground",
+        "esri/layers/ElevationLayer",
+        "esri/layers/MapImageLayer",
+        "esri/config",
+        "esri/views/MapView",
+        "esri/views/2d/draw/Draw",
+        "esri/Graphic",
+        "esri/views/SceneView",
+        "esri/geometry/Polyline",
+        "esri/geometry/Polygon",
+        "esri/geometry/Point",
+        "esri/geometry/Circle",
+        "esri/layers/GraphicsLayer",
+        "esri/tasks/Geoprocessor",
+        "esri/tasks/support/LinearUnit",
+        "esri/tasks/support/FeatureSet",
+        "esri/widgets/DirectLineMeasurement3D",
+        "esri/widgets/AreaMeasurement3D",
+        "esri/Camera",
+        "esri/geometry/geometryEngine",
+        "dojo/domReady!"
+    ], function (Home, Viewpoint, Map, Ground,
+                 ElevationLayer,
+                 MapImageLayer,
+                 esriConfig,
+                 MapView,
+                 Draw, Graphic, SceneView,
+                 Polyline, Polygon, Point, Circle, GraphicsLayer,
+                 Geoprocessor, LinearUnit, FeatureSet, DirectLineMeasurement3D, AreaMeasurement3D, Camera, geometryEngine) {
+        esriConfig.request.corsEnabledServers.push("172.16.4.174:6080");//设置地图服务器已允许跨域
+        var qinghaiurl = " http://172.16.4.174:6080/arcgis/rest/services/Qinghai/QinghaiService/MapServer";
+        var demLayer = new ElevationLayer("//elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer");
+        /******************************************初始化: camera,map,view,buttons************************************************/
+        var vc = new Camera({
+            position: {
+                x: 101.783940,
+                y: 36.608856,
+                z: 6000,
+                spatialReference: {
+                    wkid: 4326
+                }
+            },
+            heading: 0,
+            tilt: 45
+        });
+        var vp = new Viewpoint(
+            {
+                camera: vc
+            });
+        var map = new Map({
+            basemap: "hybrid",
+            ground: new Ground({
+                layers: [demLayer]/*"world-elevation"*/
+            }),
+            showLabels: true
+        });
+
+        //三维视图
+        var view = new SceneView({
+            container: "viewDiv",
+            map: map
+
+        });
+        /* var mapLayer = new MapImageLayer();
+         mapLayer.url = qinghaiurl;
+         map.add(mapLayer);*/
+
+        /******************************************通视分析专用图层，样式************************************************/
+        var graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+        //点样式
+        var markerSymbol = {
+            type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+            color: [255, 0, 0],
+            outline: { // autocasts as new SimpleLineSymbol()
+                color: [255, 255, 255],
+                width: 2
+            }
+        };
+
+        //可视域填充样式
+        var fillSymbol = {
+            type: "simple-fill", // autocasts as new SimpleFillSymbol()
+            color: [226, 119, 40, 0.75],
+            outline: { // autocasts as new SimpleLineSymbol()
+                color: [255, 255, 255],
+                width: 1
+            }
+        };
+        // typical usage
+        var homeButton = new Home({
+            view: view,
+            viewpoint: vp
+        });
+        var activeWidget = null;
+        view.ui.add(homeButton, "top-left");
+        view.ui.add("point-button", "top-left");//添加绘制点按钮，自定义UI
+        view.ui.add("line-button", "top-left");//添加绘制线按钮，自定义UI
+        view.ui.add("area-button", "top-left");//添加绘制面按钮，自定义UI
+        view.ui.add("circle-button", "top-left");//添加绘制圆按钮，自定义UI
+        view.ui.add("rectangle-button", "top-left");//添加绘制矩形按钮，自定义UI
+        view.ui.add("reset-button", "top-left");//添加清除按钮，自定义UI
+        view.ui.remove("attribution");//移除底部ESRI logo
+
+        /******************************************f第一次位置跳转f************************************************/
+        view.when(function () {
+            view.goTo(vc, {
+                speedFactor: 1
+            });
+            /*var homeButton = document.getElementById("home-button");
+            homeButton.onclick = function () {
+                view.goTo(vc);
+            };*/
+        });
+        /******************************************function:绘制点线面等图形************************************************/
+        view.when(function () {
+            var draw = new Draw({
+                view: view
+            });
+            //绑定面按钮绘制事件  点
+            var drawPointButton = document.getElementById("point-button");
+            drawPointButton.onclick = function () {
+                enableCreatePoint(draw, view);
+                setActiveButton(this);
+            };
+            //绑定线按钮绘制事件  线
+            var drawLineButton = document.getElementById("line-button");
+            drawLineButton.onclick = function () {
+                view.graphics.removeAll();//清除之前的绘制
+                enableCreateLine(draw, view);
+                setActiveButton(this);
+            };
+            //绑定面按钮绘制事件  任意面
+            var drawAreaButton = document.getElementById("area-button");
+            drawAreaButton.onclick = function () {
+                view.graphics.removeAll();//清除之前的绘制
+                enableCreateArea(draw, view);
+                setActiveButton(this);
+            };
+            //绑定面按钮绘制事件 圆
+            var drawCircleButton = document.getElementById("circle-button");
+            drawCircleButton.onclick = function () {
+                enableCreateCircle(draw, view);
+                setActiveButton(this);
+            };
+            //绑定面按钮绘制事件  矩形
+            var drawRectangleButton = document.getElementById("rectangle-button");
+            drawRectangleButton.onclick = function () {
+                enableCreateRectangle(draw, view);
+                setActiveButton(this);
+            };
+            /******************************************function:定位************************************************/
+            var positionAdd = document.getElementById("btndingwei");
+            positionAdd.onclick = function () {
+                var jingDu = document.getElementById("jingdu");
+                var weiDu = document.getElementById("weidu");
+                view.graphics.removeAll();//清除之前的绘制
+                positionToPoi(draw, view, jingDu.value, weiDu.value);
+            };
+            /******************************************function:清除重置************************************************/
+            document.getElementById("reset-button").onclick = function () {
+                view.graphics.removeAll();
+                view.cursor = "default";
+                var jingDu = document.getElementById("jingdu");
+                var weiDu = document.getElementById("weidu");
+                var gaoDu = document.getElementById("height");
+                jingDu.value = "";
+                weiDu.value = "";
+                gaoDu.value = "";
+                setActiveButton(null);
+            };
+        });
+
+        /******************************************function:三维量测************************************************/
+        document.getElementById("distanceButton").addEventListener("click",
+            function () {
+                setActiveWidget(null);
+                if (!this.classList.contains('active')) {
+                    setActiveWidget('distance');
+                } else {
+                    setActiveButton(null);
+                }
+            });
+
+        document.getElementById("areaButton").addEventListener("click",
+            function () {
+                setActiveWidget(null);
+                if (!this.classList.contains('active')) {
+                    setActiveWidget('area');
+                } else {
+                    setActiveButton(null);
+                }
+            });
+
+        function setActiveWidget(type) {
+            switch (type) {
+                case "distance":
+                    activeWidget = new DirectLineMeasurement3D({
+                        view: view
+                    });
+                    view.ui.add(activeWidget, "top-right");
+                    setActiveButton(document.getElementById('distanceButton'));
+                    break;
+                case "area":
+                    activeWidget = new AreaMeasurement3D({
+                        view: view
+                    });
+                    view.ui.add(activeWidget, "top-right");
+                    setActiveButton(document.getElementById('areaButton'));
+                    break;
+                case null:
+                    if (activeWidget) {
+                        view.ui.remove(activeWidget);
+                        activeWidget.destroy();
+                        activeWidget = null;
+                    }
+                    break;
+            }
+        }
+
+        function setActiveButton(selectedButton) {
+            // focus the view to activate keyboard shortcuts for sketching
+            view.focus();
+            var elements = document.getElementsByClassName("active");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove("active");
+            }
+            if (selectedButton) {
+                selectedButton.classList.add("active");
+            }
+        }
+
+        /* $("input").bind("keyup",function(){
+             $("input").val($("input").val().replace(/[^\-?\d.]/g,''));
+         });*/
+
+        /******************************************function:点线面绘制监听函数************************************************/
+
+        /******************************************function:开始监听画点************************************************/
+        function enableCreatePoint(draw, view) {
+            var action = draw.create("point", {
+                mode: "click"//点击方式加点
+            });
+            // 获取焦点
+            view.focus();
+            view.cursor = "crosshair";
+            // 顶点添加事件
+            action.on("vertex-add", createPoint);
+            //顶点移除事件
+            action.on("vertex-remove", createPoint);
+            // 绘制完成事件
+            action.on("cursor-update", createPoint1);
+            action.on("draw-complete", createPoint);
+        }
+
+        /******************************************function:开始监听画线************************************************/
+        function enableCreateLine(draw, view) {
+            var action = draw.create("polyline", {
+                mode: "click"
+            });
+            // 获取焦点
+            view.focus();
+            view.cursor = "crosshair";
+            // 顶点添加事件
+            action.on("vertex-add", updateVertices);
+            //顶点移除事件
+            action.on("vertex-remove", updateVertices);
+            // 鼠标移动事件
+            action.on("cursor-update", updateVertices);
+            // 绘制完成事件
+            action.on("draw-complete", updateVertices);
+        }
+
+        /******************************************function:开始监听画面************************************************/
+        function enableCreateArea(draw, view) {
+            var action = draw.create("polygon", {
+                mode: "click"//点击方式加点
+            });
+            // 获取焦点
+            view.focus();
+            view.cursor = "crosshair";
+            // 顶点添加事件
+            action.on("vertex-add", createPolygon);
+            //顶点移除事件
+            action.on("vertex-remove", createPolygon);
+            // 鼠标移动事件
+            action.on("cursor-update", createPolygon);
+            // 绘制完成事件
+            action.on("draw-complete", createPolygon);
+        }
+
+        /******************************************function:开始监听画圆************************************************/
+        function enableCreateCircle(draw, view) {
+            var action = draw.create("circle", {
+                mode: "click"//点击方式加点
+            });
+            // 获取焦点
+            view.focus();
+            view.cursor = "crosshair";
+            //顶点移除事件
+            action.on("vertex-remove", createCircle);
+            // 鼠标移动事件
+            action.on("cursor-update", createCircle);
+            // 绘制完成事件
+            action.on("draw-complete", createCircle);
+        }
+
+        /******************************************function:开始监听画矩形************************************************/
+        function enableCreateRectangle(draw, view) {
+            var action = draw.create("rectangle", {
+                mode: "click"//点击方式加点
+            });
+            // 获取焦点
+            view.focus();
+            view.cursor = "crosshair";
+            //顶点移除事件
+            action.on("vertex-remove", createRectangle);
+            // 鼠标移动事件
+            action.on("cursor-update", createRectangle);
+            // 绘制完成事件
+            action.on("draw-complete", createRectangle);
+        }
+
+        function positionToPoi(draw, view, x, y) {
+            try {
+                var gaoDu = document.getElementById("height");
+                if (x !== "" && y !== "") {
+                    gaoDu.value = "";
+                    //生成绘制的图形
+                    var graphic = new Graphic({
+                        geometry: new Point({
+                            hasZ: true,
+                            hasM: false,
+                            longitude: parseFloat(x),
+                            latitude: parseFloat(y),
+                            spatialReference: view.spatialReference
+                        }),
+                        symbol: symbolPoint
+
+                    });
+                    // 将绘制的图形添加到view
+                    view.graphics.add(graphic);
+                    view.goTo(graphic);
+                    demLayer.queryElevation(graphic.geometry).then(function (result) {
+                        var posslide = result.geometry;
+                        gaoDu.value = (posslide.z).toFixed(2) + "米";
+                    })
+                    // Failed to sample (e.g. service unavailable)
+                        .catch(function (error) {
+                            console.error("Failed to query elevation:", error.message);
+                        });
+                }
+                else {
+                    gaoDu.value = "";
+                }
+            }
+            catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        /******************************************Symbols:点线面************************************************/
+        var symbolPoint = {
+            type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+            color: [255, 0, 0],
+            size: "8px",  // pixels
+            outline: {  // autocasts as new SimpleLineSymbol()
+                color: [255, 255, 0],
+                width: 2  // points
+            }
+        };
+        var symbolLine = {
+            type: "simple-line", // autocasts as new SimpleFillSymbol
+            color: [210, 90, 141],
+            width: 4,
+            cap: "round",
+            join: "round"
+        };
+        var symbolPolygon = {
+            type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+            color: [51, 51, 204, 0.9],
+            style: "solid",
+            outline: {  // autocasts as new SimpleLineSymbol()
+                color: "white",
+                width: 2
+            }
+        };
+
+        /******************************************function:根据点坐标生成新的线************************************************/
+        function updateVertices(event) {
+            // create a polyline from returned vertices
+            const result = createPolyline(event);
+            // if the last vertex is making the line intersects itself,
+            // prevent the events from firing
+            if (result.selfIntersects) {
+                event.preventDefault();
+            }
+        }
+
+        function createPolyline(event) {
+            //获取所有顶点
+            var vertices = event.vertices;
+            //清除之前绘制
+            view.graphics.removeAll();
+            // 生成绘制的图形
+            var graphic = new Graphic({
+                geometry: new Polyline({
+                    hasZ: false,
+                    paths: vertices,
+                    spatialReference: view.spatialReference
+                }),
+                symbol: symbolLine
+            });
+            // 将绘制的图形添加到view
+            // check if the polyline intersects itself.
+            const intersectingSegment = getIntersectingSegment(graphic.geometry);
+            // Add a new graphic for the intersecting segment.
+            if (intersectingSegment) {
+                view.graphics.addMany([graphic, intersectingSegment]);
+            }
+            // Just add the graphic representing the polyline if no intersection
+            else {
+                view.graphics.add(graphic);
+                view.cursor = "default";
+            }
+            // return intersectingSegment
+            return {
+                selfIntersects: intersectingSegment
+            }
+        }
+
+        // function that checks if the line intersects itself
+        function isSelfIntersecting(polyline) {
+            if (polyline.paths[0].length < 3) {
+                return false
+            }
+            const line = polyline.clone();
+
+            //get the last segment from the polyline that is being drawn
+            const lastSegment = getLastSegment(polyline);
+            line.removePoint(0, line.paths[0].length - 1);
+
+            // returns true if the line intersects itself, false otherwise
+            return geometryEngine.crosses(lastSegment, line);
+        }
+
+        // Checks if the line intersects itself. If yes, change the last
+        // segment's symbol giving a visual feedback to the user.
+        function getIntersectingSegment(polyline) {
+            if (isSelfIntersecting(polyline)) {
+                return new Graphic({
+                    geometry: getLastSegment(polyline),
+                    symbol: {
+                        type: "simple-line", // autocasts as new SimpleLineSymbol
+                        style: "lightblue",
+                        width: "3.5px",
+                        color: "yellow"
+                    }
+                });
+            }
+            return null;
+        }
+
+        // Get the last segment of the polyline that is being drawn
+        function getLastSegment(polyline) {
+            const line = polyline.clone();
+            const lastXYPoint = line.removePoint(0, line.paths[0].length - 1);
+            const existingLineFinalPoint = line.getPoint(0, line.paths[0].length -
+                1);
+            return {
+                type: "polyline",
+                spatialReference: view.spatialReference,
+                hasZ: false,
+                paths: [
+                    [
+                        [existingLineFinalPoint.x, existingLineFinalPoint.y],
+                        [lastXYPoint.x, lastXYPoint.y]
+                    ]
+                ]
+            };
+        }
+
+        /******************************************function:根据点坐标生成新的面************************************************/
+        function createPolygon(event) {
+            //获取所有顶点
+            var vertices = event.vertices;
+            //清除之前绘制
+            view.graphics.removeAll();
+            // 生成绘制的图形
+            var graphic = new Graphic({
+                geometry: new Polygon({
+                    hasZ: false,
+                    hasM: false,
+                    rings: [vertices],
+                    spatialReference: view.spatialReference
+                }),
+                symbol: symbolPolygon
+            });
+            // 将绘制的图形添加到view
+            view.graphics.add(graphic);
+            view.cursor = "default";
+        }
+
+        /******************************************function:根据点坐标生成新的点************************************************/
+        function createPoint(event) {
+            try {
+                //view.graphics.removeAll();
+                //获取所有顶点
+                var jingDu = document.getElementById("jingdu");
+                var weiDu = document.getElementById("weidu");
+                var gaoDu = document.getElementById("height");
+                jingDu.value = "";
+                weiDu.value = "";
+                gaoDu.value = "";
+                var coordinates = event.coordinates;
+
+                // var pointEle = view.height;
+                //生成绘制的图形
+                var graphic = new Graphic({
+                    geometry: new Point({
+                        hasZ: true,
+                        hasM: false,
+                        x: coordinates[0],
+                        y: coordinates[1],
+                        spatialReference: view.spatialReference
+                    }),
+                    symbol: symbolPoint
+
+                });
+                // 将绘制的图形添加到view
+                view.graphics.add(graphic);
+                view.cursor = "default";
+                jingDu.value = graphic.geometry.longitude;
+                weiDu.value = graphic.geometry.latitude;
+                demLayer.queryElevation(graphic.geometry).then(function (result) {
+                    var posslide = result.geometry;
+                    gaoDu.value = (posslide.z).toFixed(2) + "米";
+                })
+                // Failed to sample (e.g. service unavailable)
+                    .catch(function (error) {
+                        console.error("Failed to query elevation:", error.message);
+                    });
+            }
+            catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        /******************************************function:点1************************************************/
+        function createPoint1(event) {
+            try {
+                //获取所有顶点
+                var jingDu = document.getElementById("jingdu");
+                var weiDu = document.getElementById("weidu");
+                var gaoDu = document.getElementById("height");
+                jingDu.value = "";
+                weiDu.value = "";
+                gaoDu.value = "";
+                var coordinates = event.coordinates;
+
+                // var pointEle = view.height;
+                //生成绘制的图形
+                var graphic = new Graphic({
+                    geometry: new Point({
+                        hasZ: true,
+                        hasM: false,
+                        x: coordinates[0],
+                        y: coordinates[1],
+                        spatialReference: view.spatialReference
+                    }),
+                    symbol: symbolPoint
+                });
+                // 将绘制的图形添加到view
+//                view.graphics.add(graphic);
+                jingDu.value = graphic.geometry.longitude;
+                weiDu.value = graphic.geometry.latitude;
+                demLayer.queryElevation(graphic.geometry).then(function (result) {
+                    var posslide = result.geometry;
+                    gaoDu.value = (posslide.z).toFixed(2) + "米";
+                })
+                // Failed to sample (e.g. service unavailable)
+                    .catch(function (error) {
+                        console.error("Failed to query elevation:", error.message);
+                    });
+            }
+            catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        /******************************************function:根据点坐标生成新的圆************************************************/
+        function createCircle(event) {
+            //获取所有顶点
+            var vertices = event.vertices;
+            //少于一个点无法展示圆
+            if (vertices.length < 2) {
+                return
+            }
+            //清除之前绘制
+            view.graphics.removeAll();
+            //生成绘制的图形,两点画圆
+            var center = new Point({
+                hasZ: false,
+                hasM: false,
+                x: vertices[0][0],
+                y: vertices[0][1],
+                spatialReference: view.spatialReference
+            });
+            var dis = center.distance(new Point({
+                hasZ: false,
+                hasM: false,
+                x: vertices[1][0],
+                y: vertices[1][1],
+                spatialReference: view.spatialReference
+            }));
+            var graphic = new Graphic({
+                geometry: new Circle({
+                    hasZ: false,
+                    hasM: false,
+                    center: center,
+                    radius: dis,
+                    spatialReference: view.spatialReference
+                }),
+                symbol: symbolPolygon
+            });
+            // 将绘制的图形添加到view
+            view.graphics.add(graphic);
+            view.cursor = "default";
+        }
+
+        /******************************************function:根据点坐标生成新的矩形************************************************/
+        function createRectangle(event) {
+            //获取所有顶点
+            var vertices = event.vertices;
+            //两点画矩形
+            if (vertices.length < 2) {
+                return
+            }
+            var rings = [vertices[0], [vertices[0][0], vertices[1][1]], vertices[1], [vertices[1][0], vertices[0][1]]];
+            //清除之前绘制
+            view.graphics.removeAll();
+            // 生成绘制的图形
+            var graphic = new Graphic({
+                geometry: new Polygon({
+                    hasZ: false,
+                    hasM: false,
+                    rings: [rings],
+                    spatialReference: view.spatialReference
+                }),
+                symbol: symbolPolygon
+            });
+            // 将绘制的图形添加到view
+            view.graphics.add(graphic);
+            view.cursor = "default";
+        }
+
+        /******************************************地理处理服务的地址，为GPServr地址+模型名称************************************************/
+        var visibleUrl =
+            "http://172.16.4.174:6080/arcgis/rest/services/GP/visible3D/GPServer/visible3D";
+//            "http://localhost:6080/arcgis/rest/services/GP/viewshed3d2/GPServer/viewshed3d_2";
+        var viewshedUrl =
+            "http://172.16.4.174:6080/arcgis/rest/services/GP/viewshed3D2/GPServer/viewshed3D2";
+        var linesightUrl =
+            "http://172.16.4.174:6080/arcgis/rest/services/GP/LineOfSight3D/GPServer/LineOfSight3D";
+        var telitGP = new Geoprocessor();
+
+        //var sightGP = new Geoprocessor(linesightUrl);
+
+        /******************************************function:计算可见性分析************************************************/
+        function setActiveVished(type) {
+            var draw = new Draw({
+                view: view
+            });
+            switch (type) {
+                case "visible":
+                    setActiveButton(document.getElementById('BtnPVisible'));
+                    viewClick(view, draw, "visible");
+                    break;
+                case "viewshed":
+                    setActiveButton(document.getElementById('BtnPView'));
+                    viewClick(view, draw, "viewshed");
+                    break;
+                case "linesight":
+                    setActiveButton(document.getElementById('BtntpView'));
+                    viewClick(view, draw, "linesight");
+                    break;
+                case null:
+                    view.cursor = "default";
+                    break;
+            }
+        }
+
+        document.getElementById("BtnPVisible").addEventListener("click",
+            function () {
+                setActiveVished(null);
+                if (!this.classList.contains('active')) {
+                    setActiveVished('visible');
+                } else {
+                    setActiveButton(null);
+                    graphicsLayer.removeAll();
+                }
+            });
+        document.getElementById("BtnPView").addEventListener("click",
+            function () {
+                setActiveVished(null);
+                if (!this.classList.contains('active')) {
+                    setActiveVished('viewshed');
+                } else {
+                    setActiveButton(null);
+                    graphicsLayer.removeAll();
+                }
+            });
+        document.getElementById("BtntpView").addEventListener("click",
+            function () {
+                setActiveVished(null);
+                if (!this.classList.contains('active')) {
+                    setActiveVished('linesight');
+                } else {
+                    setActiveButton(null);
+                    graphicsLayer.removeAll();
+                }
+            });
+
+        function viewClick(view, draw, type) {
+            switch (type) {
+                case "visible":
+                case "viewshed": {
+                    var action = draw.create("point", {
+                        mode: "click"//点击方式加点
+                    });
+                    // 获取焦点
+                    view.focus();
+                    action.on("cursor-update", pointMove);
+                    // 绘制完成事件
+                    if (type === "visible") {
+                        action.on("draw-complete", computeVisible);
+                    }
+                    else if (type === "viewshed") {
+                        action.on("draw-complete", computeViewshed);
+                    }
+                }
+                    break;
+                case "linesight": {
+                    var action2 = draw.create("polyline", {
+                        mode: "click"//点击方式加点
+                    });
+                    // 获取焦点
+                    view.focus();
+                    view.cursor = "crosshair";
+                    // 顶点添加事件
+                    action2.on("vertex-add", createLine);
+                    //顶点移除事件
+                    action2.on("vertex-remove", createLine);
+                    // 鼠标移动事件
+                    action2.on("cursor-update", createLine);
+                    // 绘制完成事件
+                    action2.on("draw-complete", computeLinesight);
+                }
+                    break;
+            }
+        }
+
+        function createLine(event) {
+            //获取所有顶点
+            var vertices = event.vertices;
+//            两点画线
+            if (vertices.length > 2) {
+                return
+            }
+            //清除之前绘制
+            graphicsLayer.removeAll();
+            //生成绘制的图形,两点画圆
+            var startPoint = new Graphic({
+                geometry: new Point({
+                    hasZ: false,
+                    x: vertices[0][0],
+                    y: vertices[0][1],
+                    spatialReference: view.spatialReference
+                }),
+                symbol: markerSymbol
+            });
+            // 生成绘制的图形
+            var inputGraphic = new Graphic({
+                geometry: new Polyline({
+                    hasZ: false,
+                    paths: vertices,
+                    spatialReference: view.spatialReference
+                }),
+                symbol: symbolLine
+            });
+            graphicsLayer.add(startPoint);
+            graphicsLayer.add(inputGraphic);
+            //view.cursor = "default";
+        }
+
+        var symbolLine2 = {
+            type: "simple-line", // autocasts as new SimpleFillSymbol
+            color: [255, 0, 0],
+            width: 2,
+            cap: "round",
+            join: "round"
+        };
+        var symbolLine3 = {
+            type: "simple-line", // autocasts as new SimpleFillSymbol
+            color: [0, 255, 0],
+            width: 2,
+            cap: "round",
+            join: "round"
+        };
+
+        function computeLinesight(event) {
+            //获取所有顶点
+            var vertices = event.vertices;
+            //两点画线
+            if (vertices.length > 2) {
+                return
+            }
+            //清除之前绘制
+            graphicsLayer.removeAll();
+            // 生成绘制的图形
+            var inputGraphic = new Graphic({
+                geometry: new Polyline({
+                    hasZ: false,
+                    paths: vertices,
+                    spatialReference: view.spatialReference
+                }),
+                symbol: symbolLine2
+            });
+            var startPoint = new Graphic({
+                geometry: new Point({
+                    hasZ: false,
+                    x: vertices[0][0],
+                    y: vertices[0][1],
+                    spatialReference: view.spatialReference
+                }),
+                symbol: markerSymbol
+            });
+            var endPoint = new Graphic({
+                geometry: new Point({
+                    hasZ: false,
+                    x: vertices[1][0],
+                    y: vertices[1][1],
+                    spatialReference: view.spatialReference
+                }),
+                symbol: markerSymbol
+            });
+            graphicsLayer.add(startPoint);
+            graphicsLayer.add(endPoint);
+//            graphicsLayer.add(inputGraphic);
+            view.cursor = "default";
+            var inputGraphicContainer = [];
+            inputGraphicContainer.push(inputGraphic);
+            var featureSet = new FeatureSet();
+            featureSet.features = inputGraphicContainer;
+            telitGP.url = linesightUrl;
+            var params = {
+                "inputLine": featureSet//对应发布服务的point参数，为当前视点平面位置
+            };
+            //同步异步和服务器的设置有关
+//            // 进行异步查询，使用gp.excute为同步查询
+            telitGP.submitJob(params).then(drawResultData, outError);
+        }
+
+        function pointMove(event) {
+            view.cursor = "crosshair";
+            //remove existing graphic
+            graphicsLayer.removeAll();
+            var point = new Point({
+                /*longitude: event.mapPoint.longitude,
+                latitude: event.mapPoint.latitude*/
+                x: event.coordinates[0],
+                y: event.coordinates[1],
+                spatialReference: view.spatialReference
+            });
+            var inputGraphic = new Graphic({
+                geometry: point,
+                symbol: markerSymbol
+            });
+            graphicsLayer.add(inputGraphic);
+        }
+
+        function computeVisible(event) {
+            //remove existing graphic
+            graphicsLayer.removeAll();
+            var point = new Point({
+                /*longitude: event.mapPoint.longitude,
+                latitude: event.mapPoint.latitude*/
+                x: event.coordinates[0],
+                y: event.coordinates[1],
+                spatialReference: view.spatialReference
+            });
+
+            var inputGraphic = new Graphic({
+                geometry: point,
+                symbol: markerSymbol
+            });
+
+            graphicsLayer.add(inputGraphic);
+            view.cursor = "default";
+            var inputGraphicContainer = [];
+            inputGraphicContainer.push(inputGraphic);
+            var featureSet = new FeatureSet();
+            featureSet.features = inputGraphicContainer;
+            var vsDistance = new LinearUnit();
+            vsDistance.distance = 5000;
+            vsDistance.units = "meters";//注意单位
+
+            var params = {
+                "point": featureSet,//对应发布服务的point参数，为当前视点平面位置
+                "Distance": vsDistance,//对应发布服务的dis参数，为可视的距离
+                "Observer_offset ": 0
+            };
+            telitGP.url = visibleUrl;
+            //同步异步和服务器的设置有关
+//            // 进行异步查询，使用gp.excute为同步查询
+            telitGP.submitJob(params).then(drawResultData, outError);
+            //进行同步查询
+//            gp.execute(params).then(drawResultData, outError);
+        }
+
+        function computeViewshed(event) {
+            //remove existing graphic
+            graphicsLayer.removeAll();
+            var point = new Point({
+                /*longitude: event.mapPoint.longitude,
+                latitude: event.mapPoint.latitude*/
+                x: event.coordinates[0],
+                y: event.coordinates[1],
+                spatialReference: view.spatialReference
+            });
+
+            var inputGraphic = new Graphic({
+                geometry: point,
+                symbol: markerSymbol
+            });
+
+            graphicsLayer.add(inputGraphic);
+            view.cursor = "default";
+            var inputGraphicContainer = [];
+            inputGraphicContainer.push(inputGraphic);
+            var featureSet = new FeatureSet();
+            featureSet.features = inputGraphicContainer;
+            var vsDistance = new LinearUnit();
+            vsDistance.distance = 5000;
+            vsDistance.units = "meters";//注意单位
+
+            var params = {
+                "point": featureSet,//对应发布服务的point参数，为当前视点平面位置
+                "Distance": vsDistance//对应发布服务的dis参数，为可视的距离
+            };
+            telitGP.url = viewshedUrl;
+            //同步异步和服务器的设置有关
+//            // 进行异步查询，使用gp.excute为同步查询
+            telitGP.submitJob(params).then(drawResultData, outError);
+            //进行同步查询
+//            gp.execute(params).then(drawResultData, outError);
+        }
+
+        //接收异步结果，进行绘制
+        function drawResultData(result) {
+            console.log("分析完成");
+            console.log(result);
+            var jobId = result.jobId;
+            //根据jobID获取分析结果
+            //下面的第二个参数为，发布服务时，看到的结果参数的名称
+            telitGP.getResultData(jobId, "result").then(function (outvalue) {
+                try {
+                    console.log("查询完成");
+                    var resultFeatures = outvalue.value.features;
+                    if (outvalue.value.geometryType === "polygon" && resultFeatures.length > 0) {
+                        // 给每一个结果添加样式
+                        var viewshedGraphics = resultFeatures.map(function (feature) {
+                            feature.symbol = fillSymbol;
+                            return feature;
+                        });
+                        // 从俯视状态看结果
+                        graphicsLayer.addMany(viewshedGraphics);
+                        var total = 0;//计算面积 平方千米
+                        var areaLabel = 0;
+                        viewshedGraphics.forEach(function (item) {
+                            total += item.attributes.Shape_Area;
+                            //areaLabel += calcuArea(item.geometry);
+                        });
+                        labelAreas(viewshedGraphics[0].geometry, total);
+                        //labelAreas(viewshedGraphics[0].geometry, areaLabel);
+                        console.log(areaLabel);
+                        view.goTo({
+                            target: viewshedGraphics,
+                            tilt: 0
+                        })
+                    }
+                    else if (outvalue.value.geometryType === "polyline" && resultFeatures.length > 0) {
+                        var graphics = resultFeatures.map(function (feature) {
+                            var visCode = feature.attributes.VisCode;
+
+                            if (visCode === 1) {
+                                feature.symbol = symbolLine3;
+                            }
+                            else {
+                                feature.symbol = symbolLine2;
+                            }
+                            return feature;
+                        });
+                        graphicsLayer.addMany(graphics);
+                        view.goTo({
+                            target: graphics,
+                            tilt: 0
+                        })
+                    }
+                    else if (resultFeatures.length <= 0) {
+                        alert("没有得到有效结果，请重新分析！")
+                    }
+                }
+                catch (e) {
+                    outError(e.message);
+                }
+            })
+        }
+
+        /******************************************function:Label polyon with its area************************************************/
+        function labelAreas(geom, area) {
+            var graphic = new Graphic({
+                geometry: geom.centroid,
+                symbol: {
+                    type: "text",
+                    color: "white",
+                    haloColor: "black",
+                    haloSize: "1px",
+                    text: (area * 0.0001).toFixed(4) + " 公顷",
+                    xoffset: 3,
+                    yoffset: 3,
+                    font: { // autocast as Font
+                        size: 14,
+                        family: "sans-serif"
+                    }
+                }
+            });            //view.graphics.add(graphic);
+            graphicsLayer.add(graphic);
+        }
+
+        //areaLabel = calcuArea(viewshedGraphics[0].geometry);
+        function calcuArea(geom) {
+            return geometryEngine.geodesicArea(geom, "square-meters");//平方米"square-meters", 平方千米"square-kilometers", 亩"acres"
+        }
+
+        //输出错误
+        function outError(e) {
+            //console.error(e);
+            alert(e);
+        }
+    })
+</script>
+</body>
+
+</html>
