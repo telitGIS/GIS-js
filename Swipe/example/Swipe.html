@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>swipe</title>
+    <link rel="stylesheet" href="../js/4.9/esri/css/main.css">
+    <link rel="stylesheet" href="../js/4.9/esri/css/swipe.css">
+    <script src="../js/4.9/init.js"></script>
+
+    <style>
+        html, body, #map1, #map2{padding: 0;margin: 0;height: 100%;width: 100%;}
+    </style>
+    <script>
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "dojo/dom-style",
+            "dojo/dom",
+            "esri/core/watchUtils",
+            "esri/widgets/Swipe/Swipe3",
+            "esri/widgets/slice/SliceViewModel",
+            "dojo/domReady!"
+        ], function(Map,MapView,domStyle,dom,watchUtils,Swipe,SliceViewModel) {
+
+            var h = new SliceViewModel();
+
+            var map1 = new Map({
+                basemap: 'streets'
+            });
+            var view1 = new MapView({
+                map: map1,
+                container: 'map1'
+            });
+
+            var map2 = new Map({
+                basemap: 'satellite'
+            });
+            var view2= new MapView({
+                map: map2,
+                container: 'map2'
+            });
+
+            view1.ui.remove(["attribution"]);
+            view2.ui.remove(["attribution"]);
+
+            var s = new Swipe({
+                view1:view1,
+                view2:view2,
+                container:"image_XY",
+                type:"vertical" //circle||vertical||horizontal
+            });
+            dojo.connect(dojo.byId("startstop"),"onclick",function () {
+                s.swip_Toggle();
+            });
+
+
+        })
+    </script>
+</head>
+<body>
+        <div id='map1'>
+            <div id='map2' ></div>
+            <div id="image_XY"></div>
+        </div>
+        <button id="startstop" style="position: absolute;top: 0px;left: 100px;width: 80px;height:30px;z-index: 9">显示隐藏</button>
+</body>
+
+</html>
