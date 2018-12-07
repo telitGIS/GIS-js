@@ -1,0 +1,192 @@
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server version:        Apache Tomcat/7.0.91
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server built:          Sep 13 2018 19:52:12 UTC
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server number:         7.0.91.0
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS Name:               Windows 10
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS Version:            10.0
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Architecture:          amd64
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java Home:             C:\Program Files\Java\jre1.8.0_181
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM Version:           1.8.0_181-b13
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM Vendor:            Oracle Corporation
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_BASE:         C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_HOME:         C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djava.util.logging.config.file=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\conf\logging.properties
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Dignore.endorsed.dirs=
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Dcatalina.base=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Dcatalina.home=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:37:58 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djava.io.tmpdir=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\temp
+九月 28, 2018 9:37:58 上午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: Loaded APR based Apache Tomcat Native library 1.2.17 using APR version 1.6.3.
+九月 28, 2018 9:37:58 上午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+九月 28, 2018 9:37:58 上午 org.apache.catalina.core.AprLifecycleListener initializeSSL
+信息: OpenSSL successfully initialized (OpenSSL 1.0.2o  27 Mar 2018)
+九月 28, 2018 9:37:59 上午 org.apache.coyote.AbstractProtocol init
+信息: Initializing ProtocolHandler ["http-apr-8080"]
+九月 28, 2018 9:37:59 上午 org.apache.coyote.AbstractProtocol init
+信息: Initializing ProtocolHandler ["ajp-apr-8009"]
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.Catalina load
+信息: Initialization processed in 1152 ms
+九月 28, 2018 9:37:59 上午 org.apache.catalina.core.StandardService startInternal
+信息: Starting service Catalina
+九月 28, 2018 9:37:59 上午 org.apache.catalina.core.StandardEngine startInternal
+信息: Starting Servlet Engine: Apache Tomcat/7.0.91
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\docs
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\docs has finished in 270 ms
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\examples
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\examples has finished in 182 ms
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\host-manager
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\host-manager has finished in 35 ms
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\manager
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\manager has finished in 38 ms
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\ROOT
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\ROOT has finished in 23 ms
+九月 28, 2018 9:37:59 上午 org.apache.coyote.AbstractProtocol start
+信息: Starting ProtocolHandler ["http-apr-8080"]
+九月 28, 2018 9:37:59 上午 org.apache.coyote.AbstractProtocol start
+信息: Starting ProtocolHandler ["ajp-apr-8009"]
+九月 28, 2018 9:37:59 上午 org.apache.catalina.startup.Catalina start
+信息: Server startup in 603 ms
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server version:        Apache Tomcat/7.0.91
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server built:          Sep 13 2018 19:52:12 UTC
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Server number:         7.0.91.0
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS Name:               Windows 10
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: OS Version:            10.0
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Architecture:          amd64
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Java Home:             C:\Program Files\Java\jre1.8.0_181
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM Version:           1.8.0_181-b13
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: JVM Vendor:            Oracle Corporation
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_BASE:         C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: CATALINA_HOME:         C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djava.util.logging.config.file=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\conf\logging.properties
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Dignore.endorsed.dirs=
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Dcatalina.base=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Dcatalina.home=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91
+九月 28, 2018 9:38:22 上午 org.apache.catalina.startup.VersionLoggerListener log
+信息: Command line argument: -Djava.io.tmpdir=C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\temp
+九月 28, 2018 9:38:22 上午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: Loaded APR based Apache Tomcat Native library 1.2.17 using APR version 1.6.3.
+九月 28, 2018 9:38:22 上午 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+信息: APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+九月 28, 2018 9:38:22 上午 org.apache.catalina.core.AprLifecycleListener initializeSSL
+信息: OpenSSL successfully initialized (OpenSSL 1.0.2o  27 Mar 2018)
+九月 28, 2018 9:38:23 上午 org.apache.coyote.AbstractProtocol init
+信息: Initializing ProtocolHandler ["http-apr-8080"]
+九月 28, 2018 9:38:23 上午 org.apache.coyote.AbstractProtocol init
+信息: Initializing ProtocolHandler ["ajp-apr-8009"]
+九月 28, 2018 9:38:23 上午 org.apache.catalina.startup.Catalina load
+信息: Initialization processed in 836 ms
+九月 28, 2018 9:38:23 上午 org.apache.catalina.core.StandardService startInternal
+信息: Starting service Catalina
+九月 28, 2018 9:38:23 上午 org.apache.catalina.core.StandardEngine startInternal
+信息: Starting Servlet Engine: Apache Tomcat/7.0.91
+九月 28, 2018 9:38:23 上午 org.apache.catalina.startup.HostConfig deployWAR
+信息: Deploying web application archive C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\arcgis.war
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.TldConfig execute
+信息: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployWAR
+信息: Deployment of web application archive C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\arcgis.war has finished in 2,283 ms
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\docs
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\docs has finished in 35 ms
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\examples
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\examples has finished in 189 ms
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\host-manager
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\host-manager has finished in 51 ms
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\manager
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\manager has finished in 43 ms
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deploying web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\ROOT
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.HostConfig deployDirectory
+信息: Deployment of web application directory C:\Users\Administrator\Desktop\apache-tomcat-7.0.91-windows-x64\apache-tomcat-7.0.91\webapps\ROOT has finished in 35 ms
+九月 28, 2018 9:38:25 上午 org.apache.coyote.AbstractProtocol start
+信息: Starting ProtocolHandler ["http-apr-8080"]
+九月 28, 2018 9:38:25 上午 org.apache.coyote.AbstractProtocol start
+信息: Starting ProtocolHandler ["ajp-apr-8009"]
+九月 28, 2018 9:38:25 上午 org.apache.catalina.startup.Catalina start
+信息: Server startup in 2701 ms
+九月 28, 2018 9:43:03 上午 com.esri.arcgis.server.wa.util.ServerUtil getPublicKey
+信息: Error in accessing admin generate token using https protocol 管理员请求获取计算机时出错 !ags_usct_http_error : {404 - Not Found}!
+九月 28, 2018 9:43:03 上午 com.esri.arcgis.server.wa.util.ServerUtil getToken
+信息: Error in accessing admin generate token using https protocol Unable to get public key.
+九月 28, 2018 9:43:03 上午 com.esri.arcgis.server.wa.util.ServerUtil getToken
+警告: Unable to get token for user admin, null
+九月 28, 2018 9:43:03 上午 com.esri.arcgis.server.wa.servlet.AGSWebAdaptorConfigServlet service
+严重: 无法为 GIS 服务器配置 Web Adaptor。请确保 GIS 服务器正在运行，并且所指定的帐户具有对站点的管理权限。
+九月 28, 2018 9:43:45 上午 com.esri.arcgis.server.wa.util.ServerUtil getPublicKey
+信息: Error in accessing admin generate token using https protocol 管理员请求获取计算机时出错 !ags_usct_http_error : {404 - Not Found}!
+九月 28, 2018 9:43:45 上午 com.esri.arcgis.server.wa.util.ServerUtil getToken
+信息: Error in accessing admin generate token using https protocol Unable to get public key.
+九月 28, 2018 9:43:45 上午 com.esri.arcgis.server.wa.util.ServerUtil getToken
+警告: Unable to get token for user admin, null
+九月 28, 2018 9:43:45 上午 com.esri.arcgis.server.wa.servlet.AGSWebAdaptorConfigServlet service
+严重: 无法为 GIS 服务器配置 Web Adaptor。请确保 GIS 服务器正在运行，并且所指定的帐户具有对站点的管理权限。
+九月 28, 2018 9:44:05 上午 com.esri.arcgis.server.wa.util.ServerUtil getPublicKey
+信息: Error in accessing admin generate token using https protocol 管理员请求获取计算机时出错 !ags_usct_http_error : {404 - Not Found}!
+九月 28, 2018 9:44:05 上午 com.esri.arcgis.server.wa.util.ServerUtil getToken
+信息: Error in accessing admin generate token using https protocol Unable to get public key.
+九月 28, 2018 9:44:05 上午 com.esri.arcgis.server.wa.util.ServerUtil getToken
+警告: Unable to get token for user admin, null
+九月 28, 2018 9:44:05 上午 com.esri.arcgis.server.wa.servlet.AGSWebAdaptorConfigServlet service
+严重: 无法为 GIS 服务器配置 Web Adaptor。请确保 GIS 服务器正在运行，并且所指定的帐户具有对站点的管理权限。
+九月 28, 2018 9:44:39 上午 com.esri.arcgis.server.wa.cluster.UpdateServerCacheTask updateServerList
+信息: Added Server: XLH to the cluster
+九月 28, 2018 9:44:39 上午 com.esri.arcgis.server.wa.data.AGSWebAdaptorConfig updateConfigFile
+信息: Properties file is updated
+九月 28, 2018 9:44:39 上午 com.esri.arcgis.server.wa.data.AGSWebAdaptorConfig updateConfigFile
+信息: Properties file is updated
